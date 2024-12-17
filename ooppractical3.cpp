@@ -1,133 +1,97 @@
-# include<iostream>
-# include<stdio.h>
+#include <iostream>
 using namespace std;
-class publication                 
+class publication
 {
-    private:
-    string title;
-    float price;
+    protected:
+        string title;
+        float price;
     public:
-    void add()
+    publication()
     {
-        cout << "\nEnter the Publication information : " << endl;
-        cout << "Enter Title of the Publication : ";
-        cin.ignore();
-        getline(cin, title);
-        cout << "Enter Price of Publication : ";
-        cin >> price;
+        title="";
+        price=0.0;
     }
-    void display()
+    publication(string t,float p)
     {
-        cout << "\n--------------------------------------------------";
-        cout << "\nTitle of Publication : " << title;
-        cout << "\nPublication Price : " << price;
+        title=t;
+        price=p;
     }
 };
-
-class book : public publication  
+class book:public publication
 {
     private:
-    int page_count;
+        int pages;
     public:
-    void add_book()
-    {
-        try
+        book():publication()
         {
-            add();
-            cout << "Enter Page Count of Book : ";
-            cin >> page_count;
-            if (page_count <= 0)
+            pages=0;
+        }
+        book(string t,int p,float pr):publication(t,pr)
         {
-            throw page_count;
+            if(p>0&&pr>0.0)
+            {
+                pages=p;
+            }
+            else{
+                throw(0);
+            }
         }
-        }
-            catch(...)
+        void display()
         {
-            cout << "\nInvalid Page Count!!!";
-            page_count = 0;
+            cout<<title<<"|"<<price<<"|"<<pages<<endl;
         }
-    }
-    void display_book()
-    {
-        display();
-        cout << "\nPage Count : " <<
-        page_count;
-        cout << "\n--------------------------------------------------\n";
-    }
 };
-class tape : public publication     
+class tape:public publication
 {
     private:
-    float play_time;
+        float mins;
     public:
-    void add_tape()
-    {
-        try
+        tape():publication()
         {
-            add();
-            cout << "Enter Play Duration of the Tape : ";
-            cin >> play_time;
-            if (play_time <= 0)
-            throw play_time;
+            mins=0.0;
         }
-            catch(...)
+        tape(string t,float p,float pr):publication(t,pr)
         {
-            cout << "\nInvalid Play Time!!!";
-            play_time = 0;
+            mins=p;
+            if(p>0&&pr>0.0)
+            {
+                mins=p;
+            }
+            else{
+                throw(0);
+            }
         }
-    }
-    void display_tape()
-    {
-        display();
-        cout << "\nPlay Time : " <<
-        play_time << " min";
-        cout << "\n--------------------------------------------------\n";
-    }
+        void display()
+        {
+            cout<<title<<"|"<<price<<"|"<<mins<<endl;
+        }
 };
 int main()
 {
-    book b1[10];            
-    tape t1[10];            
-    int ch, b_count = 0, t_count = 0;
-    do
+    int pages;
+    float price;
+    string title;
+    cout<<"Enter Book Details : Title|pages|price"<<endl;
+    cin>>title>>pages>>price;
+    float mins,pr;
+    string t;
+    cout<<"Enter Book Details : Title|mins|price"<<endl;
+    cin>>t>>mins>>pr;
+    book b;
+    tape t1;
+    try
     {
-        cout << "\n* * * * * PUBLICATION DATABASE SYSTEM * * * * *";
-        cout << "\n--------------------MENU-----------------------";
-        cout << "\n1. Add Information to Books";
-        cout << "\n2. Add Information to Tapes";
-        cout << "\n3. Display Books Information";
-        cout << "\n4. Display Tapes Information";
-        cout << "\n5. Exit";
-        cout << "\n\nEnter your choice : ";
-        cin >> ch;
-        switch(ch)
-            {
-            case 1:
-            b1[b_count].add_book();
-            b_count + +
-            break;
-            case 2:
-            t1[t_count].add_tape();
-            t_count + +
-            break;
-            case 3:
-            cout << "\n* * * * BOOK PUBLICATION DATABASE SYSTEM * * * *";
-            for (int j=0;j < b_count;j++)
-            {
-                b1[j].display_book();
-            }
-            break;
-            case 4:
-            cout << "\n* * * * TAPE PUBLICATION DATABASE SYSTEM * * * *";
-            for (int j=0;j < t_count;j++)
-            {
-                t1[j].display_tape();
-            }
-            break;
-            case 5:
-            exit(0);
-        }
+        b = book(title,pages,price);
+        t1 = tape(t,mins,pr);
     }
-    while (ch != 5);
+    catch(...)
+    {
+        b.display();
+        t1.display();
+        b=book("",0,0);
+        t1=tape("",0,0);
+    }
+    b.display();
+    t1.display();
     return 0;
 }
